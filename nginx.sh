@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo '#START ...'
+echo 'NGINX'
 if [ "$1" = "test" ]
 then
     echo '#Testing configs ...'
