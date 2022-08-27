@@ -1,0 +1,141 @@
+version: '3.6'
+
+services:
+
+  ###################################################################
+
+  nginx:
+    build:
+        context: ./services/nginx
+        dockerfile: Dockerfile
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - php
+    volumes:
+      # Configs
+      - ./services/nginx/hosts:/etc/nginx/conf.d # Virtual Hosts
+      - ./services/nginx/configs:/etc/nginx/configs # Configs 
+      - ./logs/nginx:/var/log/nginx # Logs
+
+      # Data
+      - ./services/nginx/data:/var/data:rw # Data files
+      - /var/www:/var/www  # Work Folder
+
+      # Letsencrypt
+      - ./services/nginx/letsencrypt:/etc/letsencrypt # Certs
+      - ./logs/letsencrypt:/var/log/letsencrypt # Logs
+      - /var/www/html/.well-known/acme-challenge:/var/www/html/.well-known/acme-challenge:rw # ACME
+
+      # TimeZone
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=Europe/Astrakhan
+
+  ###################################################################
+
+  php:
+    build:
+      context: ./services/php
+      dockerfile: Dockerfile
+    working_dir: /var/www
+    volumes:
+      - /var/www:/var/www
+      - ./logs/php:/var/log/php # Logs
+      - ./services/php/supervisor:/etc/supervisor # Supervisor configs
+
+      # TimeZone
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - '9000:9000'
+    depends_on:
+     - mariadb
+    environment:
+      - TZ=Europe/Astrakhan
+
+  ###################################################################
+
+  mariadb:
+    #image: mariadb:10.7
+    build:
+      context: ./services/mariadb
+      dockerfile: Dockerfile
+    restart: 'always'
+    ports:
+      - 3306:3306
+    volumes:
+      - ./services/mariadb/lib:/var/lib/mysql
+      - ./services/mariadb/configs:/etc/mysql
+      - ./services/mariadb/data:/var/data:rw # Data files
+      #- ./logs/mariadb/:/var/log/mysql # Сбивает права
+
+      #TimeZone
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=Europe/Astrakhan
+      - MYSQL_ROOT_PASSWORD=DaNuPo00@
+      - MYSQL_USER=syntmind
+      - MYSQL_PASSWORD=DaNuPo00@
+      #- MYSQL_DATABASE=citizix_db
+
+  ###################################################################
+
+  cron:
+    build:
+      context: ./services/cron
+      dockerfile: Dockerfile
+    volumes:
+      - /var/www:/var/www
+      - ./logs/cron/:/var/log/ # Logs
+
+      # TimeZone
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - php
+    environment:
+      - TZ=Europe/Astrakhan
+
+  ###################################################################
+
+  # supervisor:
+  #   build:
+  #     context: ./services/supervisor
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - /var/www:/var/www
+  #     - ./logs/supervisor:/var/log/supervisor # Logs
+
+  #     # TimeZone
+  #     - /etc/timezone:/etc/timezone:ro
+  #     - /etc/localtime:/etc/localtime:ro
+  #   depends_on:
+  #     - mariadb
+  #   environment:
+  #     - TZ=Europe/Astrakhan
+
+  ###################################################################
+
+  # nodejs:
+  #   build:
+  #     context: ./services/nodejs
+  #     dockerfile: Dockerfile
+  #   container_name: nodejs
+  #   volumes:
+  #     - /var/www:/var/www
+  #   entrypoint: ['npm']
+
+  ###################################################################
+
+  # composer:
+  #   image: composer:latest
+  #   volumes:
+  #     - /var/www:/var/www
+  #   working_dir: /var/www
+  #   depends_on:
+  #     - php
+  #   entrypoint: ['composer', '--ignore-platform-reqs']

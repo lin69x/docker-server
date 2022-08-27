@@ -1,0 +1,85 @@
+FROM php:8.1-fpm-alpine
+WORKDIR /var/www
+
+RUN apk -U upgrade
+# Install ldap
+RUN apk add libldap php-ldap ldb-dev openldap openldap-dev openldap-clients openldap-back-mdb
+RUN apk add icu-data-full
+
+#Install PHP
+RUN apk add --no-cache --virtual .user-packs \
+  curl \
+  php81 \
+  php81-bz2 \
+  php81-common \
+  php81-ctype \
+  php81-curl \
+  php81-dom \
+  php81-exif \
+  php81-fpm \
+  php81-gd \
+  php81-iconv \
+  php81-intl \
+  php81-json \
+  php81-mbstring \
+  php81-mysqli \
+  php81-opcache \
+  php81-openssl \
+  php81-phar \
+  php81-pdo \
+  php81-pdo_mysql \
+  php81-session \
+  php81-xml \
+  php81-xmlreader \
+  php81-zlib \
+  php81-zip
+
+# Configure PHP-FPM
+#RUN docker-php-ext-configure mysqli -with-mysqli=/usr/local/mysqli
+#RUN docker-php-ext-install pdo pdo_mysql
+#RUN docker-php-ext-install mysql mysqli pdo pdo_mysql
+
+#RUN docker-php-ext-install pdo_mysql
+
+COPY ./configs/www.conf /usr/local/etc/php-fpm.d/www.conf
+COPY ./configs/php.ini /usr/local/etc/php/php.ini
+
+# COPY ./configs/www.conf /etc/php81/php-fpm.d/www.conf
+# COPY ./configs/php.ini /etc/php81/php.ini
+
+# COPY ./configs/www.conf /etc/php8/php-fpm.d/www.conf
+# COPY ./configs/php.ini /etc/php8/php.ini
+
+RUN mkdir -p /var/log/fpm-php \
+  && chown xfs:xfs /var/log \
+  && chown xfs:xfs /var/log/fpm-php \
+  && chmod 0755 /var/log/fpm-php \
+  && touch /var/log/fpm-php/error.log \
+  && chmod 0664 /var/log/fpm-php/error.log \
+  && touch /var/log/fpm-php/slow.log \
+  && chmod 0664 /var/log/fpm-php/slow.log
+
+
+RUN mkdir -p /run/php/
+RUN touch /run/php/php8.1-fpm.pid
+
+RUN ln -sf /dev/stdout /var/log/log.log
+RUN ln -sf /dev/stderr /var/log/log1.log
+
+# Check PHP
+RUN php -v && php -m
+
+# Composer Configure
+#RUN curl -sS https://getcomposer.org/installer -o composer-setup.php
+#RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+#RUN rm -rf composer-setup.php
+#COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
+# Configure supervisor
+#RUN mkdir -p /etc/supervisor.d/
+#COPY .supervisor/supervisord.ini /etc/supervisor.d/supervisord.ini
+
+#CMD ["supervisord", "-c", "/etc/supervisor.d/supervisord.ini"]
+
+# Change current user to www
+USER xfs
