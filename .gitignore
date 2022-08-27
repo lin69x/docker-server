@@ -5,10 +5,10 @@ logs/*
 !logs/README.md
 
 services/mariadb/data/*
-!services/mariadb/data//README.md
+!services/mariadb/data/README.md
 
 services/mariadb/lib/*
-!services/mariadb/lib//README.md
+!services/mariadb/lib/README.md
 
 services/nginx/data/*
 !services/nginx/data/README.md
