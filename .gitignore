@@ -1,5 +1,6 @@
 backup/*
 logs/*
+!logs/README.md
 services/mariadb/data/*
 services/mariadb/lib/*
 services/nginx/letsencrypt/*
