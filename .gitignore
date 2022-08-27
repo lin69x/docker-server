@@ -1,6 +1,6 @@
 backup/*
 logs/*
-SyntWeb.zip
 services/mariadb/data/*
 services/mariadb/lib/*
 services/nginx/letsencrypt/*
+permissions.sh
