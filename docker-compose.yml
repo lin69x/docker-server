@@ -101,6 +101,23 @@ services:
       - TZ=Europe/Astrakhan
 
   ###################################################################
+  
+  nodejs:
+    build: 
+      context: ./services/nodejs
+      dockerfile: Dockerfile
+    working_dir: /var/www
+    volumes:
+      - /var/www:/var/www
+    ports:
+      - '8080:8080'
+    environment:
+      - TZ=Europe/Astrakhan
+    extra_hosts:
+      - "host:IP"
+    tty: true
+
+  ###################################################################
 
   # supervisor:
   #   build:
@@ -117,17 +134,6 @@ services:
   #     - mariadb
   #   environment:
   #     - TZ=Europe/Astrakhan
-
-  ###################################################################
-
-  # nodejs:
-  #   build:
-  #     context: ./services/nodejs
-  #     dockerfile: Dockerfile
-  #   container_name: nodejs
-  #   volumes:
-  #     - /var/www:/var/www
-  #   entrypoint: ['npm']
 
   ###################################################################
 
