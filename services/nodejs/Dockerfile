@@ -1,4 +1,4 @@
-FROM node:17.4.0
+FROM node:18.2
 
 RUN apt-get update && apt-get install -y git yarn
 
