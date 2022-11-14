@@ -33,19 +33,19 @@ echo "Установка Docker:"
 apt install docker-ce
 
 echo "=========---"
-echo "Проверка статуса Docker:"
-systemctl status docker
-
-echo "==========--"
 echo "Установка Docker Compose:"
 curl -L "https://github.com/docker/compose/releases/download/v2.12.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 
-echo "===========-"
+echo "==========--"
 echo "Проверка Docker Compose:"
 docker-compose --version
 
-echo "============"
+echo "===========-"
 echo "Клонируем готовый шаблон для Docker:"
 cd /var/www/
 git clone https://github.com/lin69x/docker-server.git --branch master
+
+echo "============"
+echo "Проверка статуса Docker:"
+systemctl status docker
