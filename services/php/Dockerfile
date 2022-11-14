@@ -18,6 +18,7 @@ RUN docker-php-ext-install pdo exif zip mysqli pdo_mysql sockets \
     #dom session openssl json xml xmlreader intl iconv mbstring gd curl ctype dom zip pcntl phar session zlib
 
 # Set configs files
+COPY ./configs/php.ini /usr/local/etc/php/php.ini
 COPY ./configs/www.conf /usr/local/etc/php-fpm.d/www.conf
 COPY ./configs/docker.conf /usr/local/etc/php-fpm.d/docker.conf
 COPY ./configs/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
