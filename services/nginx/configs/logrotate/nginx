@@ -5,7 +5,7 @@
 	compress
 	delaycompress
 	notifempty
-	create 640 nginx adm
+	create 666 adm adm
 	sharedscripts
 	su root root
 	postrotate
