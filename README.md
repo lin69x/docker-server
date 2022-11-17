@@ -5,3 +5,6 @@ Docker universal build
 ```cd /you-dir/docker-server``` >>>
 ```./docker.sh build start``` >>>
 ```docker-compose ps```
+
+# Install
+```git clone https://github.com/lin69x/docker-server.git --branch master```
