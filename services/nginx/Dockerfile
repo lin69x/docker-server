@@ -1,6 +1,5 @@
 FROM certbot/certbot
 FROM nginx:mainline-alpine
-#COPY /etc/nginx ./nginxq
 
 RUN apk update && apk add bash certbot logrotate
 
