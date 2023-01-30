@@ -43,3 +43,26 @@ then
     echo '#Down ...'
     docker-compose down
 fi
+
+if [ "$1" = "clear" ]
+then
+    echo '#Clear ...'
+    echo 'Неиспользуемые тома'
+    docker volume ls -f dangling=true
+    docker volume rm $(docker volume ls -f dangling=true -q)
+    docker volume prune -f
+
+    echo 'Остановленные контейнеры'
+    docker ps -a -f status=exited -q
+    docker rm -vf $(docker ps -aq)
+    docker container prune -f
+
+    echo 'Недействительные образы'
+    docker images -f dangling=true -q
+    docker rmi -f $(docker images -aq)
+    docker image prune -f
+
+    echo 'Очистка неиспользуемых данных'
+    docker network prune -f
+    docker system prune -f
+fi
