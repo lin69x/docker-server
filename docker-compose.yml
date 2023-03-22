@@ -78,9 +78,9 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       - TZ=Europe/Astrakhan
-      - MYSQL_ROOT_PASSWORD=DaNuPo00@
+      - MYSQL_ROOT_PASSWORD=*****
       - MYSQL_USER=syntmind
-      - MYSQL_PASSWORD=DaNuPo00@
+      - MYSQL_PASSWORD=*****
       #- MYSQL_DATABASE=citizix_db
 
   ###################################################################
