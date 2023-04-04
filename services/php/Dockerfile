@@ -23,5 +23,8 @@ COPY ./configs/www.conf /usr/local/etc/php-fpm.d/www.conf
 COPY ./configs/docker.conf /usr/local/etc/php-fpm.d/docker.conf
 COPY ./configs/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 COPY ./configs/zz-global.conf /usr/local/etc/php-fpm.d/zz-global.conf
-COPY ./configs/.bash_profile ~/.bash_profile
-RUN source ~/.bash_profile
+
+# abbreviated entry "php artisan" => "pa"
+RUN echo "alias pa='php artisan'" > ~/.bash_profile \
+    && echo "source ~/.bash_profile" >> /etc/bash.bashrc \
+    && /bin/bash --login -C "/etc/bash.bashrc"
