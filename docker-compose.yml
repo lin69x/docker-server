@@ -99,6 +99,26 @@ services:
       - MYSQL_USER=syntmind
       - MYSQL_PASSWORD=*****
       #- MYSQL_DATABASE=citizix_db
+      
+  mongodb:
+    build:
+      context: ./services/mongodb
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 27020:27017
+    volumes:
+      - ./services/mongodb/data:/data/db
+      - ./services/mongodb/config:/data/configdb
+      - ./services/mongodb/logs:/var/log/mongodb
+
+    #   #TimeZone
+    #   - /etc/timezone:/etc/timezone:ro
+    #   - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=Europe/Astrakhan
+      - MONGO_INITDB_ROOT_USERNAME=user_name
+      - MONGO_INITDB_ROOT_PASSWORD=password
 
   ###################################################################
   
