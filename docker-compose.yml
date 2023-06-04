@@ -37,6 +37,7 @@ services:
   ###################################################################
 
   php:
+    &php-container
     build:
       context: ./services/php
       dockerfile: Dockerfile
@@ -56,6 +57,22 @@ services:
      - mariadb
     environment:
       - TZ=Europe/Astrakhan
+  
+#   Очереди для Laravel
+#   queue:
+#     <<: *php-container
+#     working_dir: /var/www/project_name
+#     ports:
+#       - '9002:9000'
+#     command: php artisan queue:work
+
+#   Планировщик для Laravel
+#   schedule:
+#     <<: *php-container
+#     working_dir: /var/www/project_name
+#     ports:
+#       - '9003:9000'
+#     command: php artisan schedule:work
 
   ###################################################################
 
@@ -84,24 +101,6 @@ services:
       #- MYSQL_DATABASE=citizix_db
 
   ###################################################################
-
-  cron:
-    build:
-      context: ./services/cron
-      dockerfile: Dockerfile
-    volumes:
-      - /var/www:/var/www
-      - ./logs/cron/:/var/log/ # Logs
-
-      # TimeZone
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
-    depends_on:
-      - php
-    environment:
-      - TZ=Europe/Astrakhan
-
-  ###################################################################
   
   nodejs:
     build: 
@@ -123,30 +122,37 @@ services:
     tty: true
 
   ###################################################################
+  
+#   cron:
+#     build:
+#       context: ./services/cron
+#       dockerfile: Dockerfile
+#     volumes:
+#       - /var/www:/var/www
+#       - ./logs/cron/:/var/log/ # Logs
 
-  # supervisor:
-  #   build:
-  #     context: ./services/supervisor
-  #     dockerfile: Dockerfile
-  #   volumes:
-  #     - /var/www:/var/www
-  #     - ./logs/supervisor:/var/log/supervisor # Logs
-
-  #     # TimeZone
-  #     - /etc/timezone:/etc/timezone:ro
-  #     - /etc/localtime:/etc/localtime:ro
-  #   depends_on:
-  #     - mariadb
-  #   environment:
-  #     - TZ=Europe/Astrakhan
+#       # TimeZone
+#       - /etc/timezone:/etc/timezone:ro
+#       - /etc/localtime:/etc/localtime:ro
+#     depends_on:
+#       - php
+#     environment:
+#       - TZ=Europe/Astrakhan
 
   ###################################################################
 
-  # composer:
-  #   image: composer:latest
-  #   volumes:
-  #     - /var/www:/var/www
-  #   working_dir: /var/www
-  #   depends_on:
-  #     - php
-  #   entrypoint: ['composer', '--ignore-platform-reqs']
+#   supervisor:
+#     build:
+#       context: ./services/supervisor
+#       dockerfile: Dockerfile
+#     volumes:
+#       - /var/www:/var/www
+#       - ./logs/supervisor:/var/log/supervisor # Logs
+
+#       # TimeZone
+#       - /etc/timezone:/etc/timezone:ro
+#       - /etc/localtime:/etc/localtime:ro
+#     depends_on:
+#       - mariadb
+#     environment:
+#       - TZ=Europe/Astrakhan
