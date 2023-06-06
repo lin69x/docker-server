@@ -64,6 +64,7 @@ services:
 #     working_dir: /var/www/project_name
 #     ports:
 #       - '9002:9000'
+#     restart: 'always'
 #     command: php artisan queue:work
 
 #   Планировщик для Laravel
@@ -72,7 +73,16 @@ services:
 #     working_dir: /var/www/project_name
 #     ports:
 #       - '9003:9000'
+#     restart: 'always'
 #     command: php artisan schedule:work
+
+#   octane-project_name:
+#     <<: *php-container
+#     working_dir: /var/www/project_name
+#     ports:
+#       - '8001:8000'
+#     restart: 'always'
+#     command: php artisan octane:start --host=0.0.0.0
 
   ###################################################################
 
@@ -100,29 +110,30 @@ services:
       - MYSQL_PASSWORD=*****
       #- MYSQL_DATABASE=citizix_db
       
-  mongodb:
-    build:
-      context: ./services/mongodb
-      dockerfile: Dockerfile
-    restart: always
-    ports:
-      - 27020:27017
-    volumes:
-      - ./services/mongodb/data:/data/db
-      - ./services/mongodb/config:/data/configdb
-      - ./services/mongodb/logs:/var/log/mongodb
+#   mongodb:
+#     build:
+#       context: ./services/mongodb
+#       dockerfile: Dockerfile
+#     restart: always
+#     ports:
+#       - 27020:27017
+#     volumes:
+#       - ./services/mongodb/data:/data/db
+#       - ./services/mongodb/config:/data/configdb
+#       - ./services/mongodb/logs:/var/log/mongodb
 
-    #   #TimeZone
-    #   - /etc/timezone:/etc/timezone:ro
-    #   - /etc/localtime:/etc/localtime:ro
-    environment:
-      - TZ=Europe/Astrakhan
-      - MONGO_INITDB_ROOT_USERNAME=user_name
-      - MONGO_INITDB_ROOT_PASSWORD=password
+#     #   #TimeZone
+#     #   - /etc/timezone:/etc/timezone:ro
+#     #   - /etc/localtime:/etc/localtime:ro
+#     environment:
+#       - TZ=Europe/Astrakhan
+#       - MONGO_INITDB_ROOT_USERNAME=user_name
+#       - MONGO_INITDB_ROOT_PASSWORD=password
 
   ###################################################################
   
   nodejs:
+    &nodejs-container
     build: 
       context: ./services/nodejs
       dockerfile: Dockerfile
@@ -140,6 +151,14 @@ services:
     #extra_hosts:
       #- "host:IP"
     tty: true
+    
+#   nodejs-prod-project_name:
+#     <<: *nodejs-container
+#     working_dir: /var/www/project_name
+#     ports:
+#       - '3001:3000'
+#     restart: 'always'
+#     command: node app/server/index.mjs
 
   ###################################################################
   
