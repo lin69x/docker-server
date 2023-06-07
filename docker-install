@@ -19,6 +19,7 @@ curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
 echo "=====-------"
 echo "Добавление репозитория Docker в источники APT:"
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian stretch stable"
+#sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
 
 echo "======------"
 echo "Обновление списка репозиториев:"
