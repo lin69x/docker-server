@@ -198,16 +198,14 @@ services:
 
 
   ###################################################################
-  uptime-kuma:
-    build:
-      context: ./services/uptime-kuma
-      image: louislam/uptime-kuma:1
-    container_name: uptime-kuma
-    restart: unless-stopped
-    ports:
-      - 4000:3001
-    volumes:
-      - ./services/uptime-kuma/data:/app/data
-      #- ./data:/app/data
-    security_opt:
-      - no-new-privileges:true
+#  uptime-kuma:
+#    image: louislam/uptime-kuma:1
+#    container_name: uptime-kuma
+#    restart: unless-stopped
+#    ports:
+#      - 4000:3001
+#    volumes:
+#      - ./services/uptime-kuma/data:/app/data
+#      #- ./data:/app/data
+#    security_opt:
+#      - no-new-privileges:true
