@@ -207,7 +207,7 @@ services:
     ports:
       - 4000:3001
     volumes:
-      - /var/www/.docker/server/services/uptime-kuma/data:/app/data
+      - ./services/uptime-kuma/data:/app/data
       #- ./data:/app/data
     security_opt:
       - no-new-privileges:true
