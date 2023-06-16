@@ -195,3 +195,19 @@ services:
 #       - mariadb
 #     environment:
 #       - TZ=Europe/Astrakhan
+
+
+  ###################################################################
+  uptime-kuma:
+    build:
+      context: ./services/uptime-kuma
+      image: louislam/uptime-kuma:1
+    container_name: uptime-kuma
+    restart: unless-stopped
+    ports:
+      - 4000:3001
+    volumes:
+      - /var/www/.docker/server/services/uptime-kuma/data:/app/data
+      #- ./data:/app/data
+    security_opt:
+      - no-new-privileges:true
