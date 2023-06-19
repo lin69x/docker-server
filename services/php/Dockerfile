@@ -2,7 +2,7 @@ FROM composer:latest AS composer
 FROM php:8.2-fpm
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y git libzip-dev zip libpng-dev zlib1g-dev libfreetype6-dev libjpeg62-turbo-dev
+RUN apt-get update && apt-get install -y libzip-dev zip libpng-dev zlib1g-dev libfreetype6-dev libjpeg62-turbo-dev
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
