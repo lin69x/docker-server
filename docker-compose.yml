@@ -57,6 +57,9 @@ services:
      - mariadb
     environment:
       - TZ=Europe/Astrakhan
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
   
 #   Очереди для Laravel
 #   queue:
@@ -151,6 +154,9 @@ services:
     #extra_hosts:
       #- "host:IP"
     tty: true
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     
 #   nodejs-prod-project_name:
 #     <<: *nodejs-container
