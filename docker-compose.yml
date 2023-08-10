@@ -33,6 +33,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       - TZ=Europe/Astrakhan
+    network_mode: host
 
   ###################################################################
 
