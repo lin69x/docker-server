@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOCKER_COMPOSE_VERSION='2.19.0'
+DOCKER_COMPOSE_VERSION='2.20.3'
 DISTRIBUTION='debian'
 DISTRIBUTION_VERSION='stretch'
 
@@ -30,11 +30,11 @@ apt update
 
 echo "=======-----"
 echo "Проверка, что установка будет выполняться из репозитория Docker, а не из репозитория $DISTRIBUTION по умолчанию:"
-apt-cache policy docker-ce
+apt-cache policy docker.io
 
 echo "========----"
 echo "Установка Docker:"
-apt install docker-ce
+apt install docker.io
 
 echo "=========---"
 echo "Установка Docker Compose:"
