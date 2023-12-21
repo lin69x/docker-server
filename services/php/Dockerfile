@@ -2,7 +2,7 @@ FROM composer:latest AS composer
 FROM php:8.2-fpm
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y libzip-dev zip libpng-dev zlib1g-dev libfreetype6-dev libjpeg62-turbo-dev
+RUN apt-get update && apt-get install -y libzip-dev zip libpng-dev zlib1g-dev libfreetype6-dev libjpeg62-turbo-dev libmagickwand-dev
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -10,7 +10,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Install PHP extensions
 RUN docker-php-ext-install pdo exif zip mysqli pdo_mysql sockets pcntl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd
+    && docker-php-ext-install -j$(nproc) gd \
+    && pecl install imagick && docker-php-ext-enable imagick
     
     # Additional extensions
     #opcache \
