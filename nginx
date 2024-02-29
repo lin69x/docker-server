@@ -9,12 +9,31 @@ fi
 
 if [ "$1" = "reload" ]
 then
-    echo '#Reload NGINX ...'
-    docker-compose exec nginx nginx -s reload
+    echo '#Testing configs ...'
+    output=$(docker-compose exec nginx nginx -t 2>&1)
+    echo "$output"
+
+    if [[ $output == *"nginx: the configuration file /etc/nginx/nginx.conf syntax is ok"* && $output == *"nginx: configuration file /etc/nginx/nginx.conf test is successful"* ]]; then
+        echo "Nginx configuration is valid."
+        echo '#Reload NGINX ...'
+        docker-compose exec nginx nginx -s reload
+    else
+        echo "Nginx configuration is invalid."
+        echo "$output"
+    fi
 fi
 
 if [ "$1" = "restart" ]
 then
-    echo '#Restart container NGINX ...'
-    docker-compose restart nginx
+    echo '#Testing configs ...'
+    output=$(docker-compose exec nginx nginx -t 2>&1)
+    echo "$output"
+    if [[ $output == *"nginx: the configuration file /etc/nginx/nginx.conf syntax is ok"* && $output == *"nginx: configuration file /etc/nginx/nginx.conf test is successful"* ]]; then
+        echo "Nginx configuration is valid."
+        echo '#Restart container NGINX ...'
+        docker-compose restart nginx
+    else
+        echo "Nginx configuration is invalid."
+        echo "$output"
+    fi
 fi
