@@ -21,12 +21,12 @@ services:
 
       # Data
       - ./services/nginx/data:/var/data:rw # Data files
-      - /var/www:/var/www  # Work Folder
+      - /var/apps:/var/apps  # Work Folder
 
       # Letsencrypt
       - ./services/nginx/letsencrypt:/etc/letsencrypt # Certs
       - ./logs/letsencrypt:/var/log/letsencrypt # Logs
-      - /var/www/html/.well-known/acme-challenge:/var/www/html/.well-known/acme-challenge:rw # ACME
+      - /var/apps/html/.well-known/acme-challenge:/var/apps/html/.well-known/acme-challenge:rw # ACME
 
       # TimeZone
       - /etc/timezone:/etc/timezone:ro
@@ -44,16 +44,16 @@ services:
       dockerfile: Dockerfile
     working_dir: /var/www
     volumes:
-      - /var/www:/var/www
+      - /var/apps:/var/apps
       - ./logs/php:/var/log/php # Logs
       - ./services/php/supervisor:/etc/supervisor # Supervisor configs
 
       # TimeZone
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-    ports:
-      - '9000:9000'
-      - '9001:9001'
+    #ports:
+      #- '9000:9000'
+      #- '9001:9001'
     depends_on:
      - mariadb
     environment:
@@ -65,7 +65,7 @@ services:
 #   Очереди для Laravel
 #   queue:
 #     <<: *php-container
-#     working_dir: /var/www/project_name
+#     working_dir: /var/apps/project_name
 #     ports:
 #       - '9002:9000'
 #     restart: 'always'
@@ -74,7 +74,7 @@ services:
 #   Планировщик для Laravel
 #   schedule:
 #     <<: *php-container
-#     working_dir: /var/www/project_name
+#     working_dir: /var/apps/project_name
 #     ports:
 #       - '9003:9000'
 #     restart: 'always'
@@ -82,7 +82,7 @@ services:
 
 #   octane-project_name:
 #     <<: *php-container
-#     working_dir: /var/www/project_name
+#     working_dir: /var/apps/project_name
 #     ports:
 #       - '8001:8000'
 #     restart: 'always'
@@ -152,9 +152,9 @@ services:
     build: 
       context: ./services/nodejs
       dockerfile: Dockerfile
-    working_dir: /var/www
+    working_dir: /var/apps
     volumes:
-      - /var/www:/var/www
+      - /var/apps:/var/apps
     ports:
       - '8080:8080'
       - '3000:3000'
@@ -172,7 +172,7 @@ services:
     
 #   nodejs-prod-project_name:
 #     <<: *nodejs-container
-#     working_dir: /var/www/project_name
+#     working_dir: /var/apps/project_name
 #     ports:
 #       - '3001:3000'
 #     restart: 'always'
