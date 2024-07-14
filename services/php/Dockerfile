@@ -38,7 +38,7 @@ COPY ./configs/www.conf /usr/local/etc/php-fpm.d/www.conf
 COPY ./configs/docker.conf /usr/local/etc/php-fpm.d/docker.conf
 COPY ./configs/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 COPY ./configs/zz-global.conf /usr/local/etc/php-fpm.d/zz-global.conf
-COPY ./configs/cacert.pem /usr/local/etc/php-fpm.d/cacert.pem
+#COPY ./configs/cacert.pem /usr/local/etc/php-fpm.d/cacert.pem
 
 # abbreviated entry "php artisan" => "pa"
 RUN echo "alias pa='php artisan'" > ~/.bash_profile \
