@@ -1,2 +1,0 @@
-* * * * * cd /var/www/tracker && /usr/local/bin/php artisan schedule:run >> /var/log/tracker-cron.log 2>&1
-# Empty String is required
